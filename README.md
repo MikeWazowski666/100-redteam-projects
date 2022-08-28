@@ -32,27 +32,27 @@ And remember: With great power comes... (we already know).
 Level 1 | Basic | Exemple
 ------------------------------------------------|------------------------------------------------|-----------------------------------------
 [0] | TCP or UDP server just to receive messages | :heavy_check_mark:
-[1] | TCP chat server | :heavy_check_mark:
-[2] | UDP chat server | :heavy_check_mark:
+[1] | TCP chat server | :x:
+[2] | UDP chat server | :x:
 [3] | Multi-threaded UDP or TCP chat server | :x:
-[4] | Server for file transfers | :heavy_check_mark:
-[5] | Caesar Cipher tool | :heavy_check_mark:
+[4] | Server for file transfers | :x:
+[5] | Caesar Cipher tool | :x:
 [6] | TCP chat server -> The messages should be encoded with Caesar Cipher | :x:
-[7] | ROT13 Cipher | :heavy_check_mark:
+[7] | ROT13 Cipher | :x:
 [8] | UDP Chat server -> The messages should be encoded with ROT13 Cipher | :x:
 [9] | Remote command execution | :x:
 [10] | Recreate the Netcat tool | :x:
 -------------------------------------------------------------------------------------------------------------------------------------------
 Level 2 | Essential | Exemple
 ------------------------------------------------|------------------------------------------------|-----------------------------------------
-[11] | Simple port scanner | :heavy_check_mark:
+[11] | Simple port scanner | :x:
 [12] | Port scanner with OS fingerprint using TTL (Time To Live) | :x:
 [13] | Port scanner with port footprint (HTTP? DNS? FTP? IRC?) | :x:
-[14] | Simple Web Directory brute-forcer (Threaded) | :heavy_check_mark:
+[14] | Simple Web Directory brute-forcer (Threaded) | :x:
 [15] | Recursive Web Directory brute-forcer (Threaded peer recursion) | :x:
 [16] | Web Login bruteforce tool | :x:
 [17] | FTP Login bruteforce tool | :x:
-[18] | SSH Login bruteforce tool | :heavy_check_mark:
+[18] | SSH Login bruteforce tool | :x:
 [19] | FTP User footprint | :x:
 [20] | MYSQL User footprint | :x:
 [21] | Simple Google Bot for web scan | :x:
@@ -88,7 +88,7 @@ Level 4 | Data analysis, payloads and more networking | Exemple
 ------------------------------------------------|------------------------------------------|-----------------------------------------------
 [45] | Packet Data analysis | :x:
 [46] | Packet image analysis with OpenCV | :x:
-[47] | Develop a hexdump tool | ✔️:
+[47] | Develop a hexdump tool | :x:
 [48] | Payload that moves the mouse cursor | :x:
 [49] | Vigenère Cipher | :x:
 [50] | Payload that starts automatically using Windows Regedit | :x:
@@ -149,18 +149,3 @@ Level 4 | Data analysis, payloads and more networking | Exemple
 -------------------------------------------------------------------------------------------------------------------------------------------
 ## Honorable Mentions:
 - Kernel Mode rootkit: [reveng_rtkit](https://github.com/reveng007/reveng_rtkit) by [@reveng007](https://twitter.com/reveng007)
-
-## Adding your examples
-
-You can make a pull request for the "Projects" directory and name the file in 
-compliance with the following convention:
-
-```
-[ID] PROJECT_NAME - <LANGUAGE> | AUTHOR
-```
-
-#### Example:
-
-```
-[91] Web Exploitation Framework - <C> | EONRaider
-```
