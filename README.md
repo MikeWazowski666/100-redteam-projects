@@ -1,50 +1,24 @@
+# 100 Red Team projects
 
-<p align="center"> 
-    <img src="/images/red.png">
-</p>
-                                                                       
-# 100  Red Team Projects for Pentesters and Network Managers
+This project's template is from [kurogai](https://github.com/kurogai/100-redteam-projects).
 
-Red Teaming is one of the most attractive fields in offensive security or ethical hacking. 
-Every day professionals and students are learning, creating and exploiting all types of 
-systems. The internet is not only the most common means through which people interact 
-and chat, but also a place where they are constantly exposed to a world where anyone can be monitored, 
-exploited, tracked or scammed.
-
-This is why us, programmers, take action; several of us continually try to protect this 
-wonderful place while others, out of immaturity or shrewd interests, act in just the opposite direction. 
-If you're interested in this field and want to join it, no matter your current level of knowledge, learning 
-how to create your own tools will result in great advantage as a pentester.
-
-So I put some thought into it and got the idea to create this project list aimed at anyone who is interested 
-in learning "how to" not become the ultimate script kiddie. Here I discriminate (based solely on my own experience) 
-almost 100 types of projects that you should at least try to either implement or study.
-
-I recommend you to do them on the programming language you are most comfortable with. Implementing these 
-projects will definitely help you gain more experience and, consequently, master the language. They are divided 
-in categories, ranging from super basic to advanced projects.
-
-If you enjoy this list please take the time to recommend it to a friend and follow me! I will be happy with that :)
-
-And remember: With great power comes... (we already know).
-
--------------------------------------------------------------------------------------------------------------------------------------------
-Level 1 | Basic | Exemple
-------------------------------------------------|------------------------------------------------|-----------------------------------------
+-------------------------------------------------------------------------------------------------
+Level 1 | Basic |
+------------------------------------------------|------------------------------------------------
 [0] | TCP or UDP server just to receive messages | :heavy_check_mark:
 [1] | TCP chat server | :x:
 [2] | UDP chat server | :x:
 [3] | Multi-threaded UDP or TCP chat server | :x:
 [4] | Server for file transfers | :x:
-[5] | Caesar Cipher tool | :x:
+[5] | Caesar Cipher tool | :heavy_check_mark:
 [6] | TCP chat server -> The messages should be encoded with Caesar Cipher | :x:
 [7] | ROT13 Cipher | :x:
 [8] | UDP Chat server -> The messages should be encoded with ROT13 Cipher | :x:
 [9] | Remote command execution | :x:
 [10] | Recreate the Netcat tool | :x:
--------------------------------------------------------------------------------------------------------------------------------------------
-Level 2 | Essential | Exemple
-------------------------------------------------|------------------------------------------------|-----------------------------------------
+-------------------------------------------------------------------------------------------------
+Level 2 | Essential |
+------------------------------------------------|------------------------------------------------
 [11] | Simple port scanner | :x:
 [12] | Port scanner with OS fingerprint using TTL (Time To Live) | :x:
 [13] | Port scanner with port footprint (HTTP? DNS? FTP? IRC?) | :x:
@@ -65,9 +39,9 @@ Level 2 | Essential | Exemple
 [28] | Simple Wordpress brute-forcer | :x:
 [29] | SQLi database retriever | :x:
 [30] | Spam creator | :x:
--------------------------------------------------------------------------------------------------------------------------------------------
-Level 3 | Advanced Network Attacks | Exemple
-------------------------------------------------|-------------------------------------------|----------------------------------------------
+-------------------------------------------------------------------------------------------------
+Level 3 | Advanced Network Attacks |
+------------------------------------------------|------------------------------------------------
 [31] | Payload for reverse shell | :x:
 [32] | Payload to capture screenshots | :x:
 [33] | Implement a Botnet | :x:
@@ -83,9 +57,9 @@ Level 3 | Advanced Network Attacks | Exemple
 [43] | IRC Server | :x:
 [44] | Packet Capture tool | :x:
 
--------------------------------------------------------------------------------------------------------------------------------------------
-Level 4 | Data analysis, payloads and more networking | Exemple
-------------------------------------------------|------------------------------------------|-----------------------------------------------
+-------------------------------------------------------------------------------------------------
+Level 4 | Data analysis, payloads and more networking |
+------------------------------------------------|------------------------------------------------
 [45] | Packet Data analysis | :x:
 [46] | Packet image analysis with OpenCV | :x:
 [47] | Develop a hexdump tool | :x:
@@ -113,9 +87,9 @@ Level 4 | Data analysis, payloads and more networking | Exemple
 [69] | Process monitor (Windows and Linux) | :x:
 [70] | Windows token privilege escalation tool | :x:
 
--------------------------------------------------------------------------------------------------------------------------------------------
- Level 5 | Cryptography, Reverse Engineering and Post exploitation | Exemple
-------------------------------------------------|------------------------------------------|-----------------------------------------------
+-------------------------------------------------------------------------------------------------
+ Level 5 | Cryptography, Reverse Engineering and Post exploitation |
+------------------------------------------------|------------------------------------------------
 [71] | Develop a code injection tool | :x:
 [72] | Develop a Worm with auto replication over email | :x:
 [73] | Simple Disassembler | :x:
@@ -146,6 +120,4 @@ Level 4 | Data analysis, payloads and more networking | Exemple
 [98] | Encoded exploit | :x:
 [99] | Antivirus evasion application | :x:
 [100] | Your own metasploit module | :x:
--------------------------------------------------------------------------------------------------------------------------------------------
-## Honorable Mentions:
-- Kernel Mode rootkit: [reveng_rtkit](https://github.com/reveng007/reveng_rtkit) by [@reveng007](https://twitter.com/reveng007)
+-------------------------------------------------------------------------------------------------
