@@ -10,19 +10,18 @@ import (
 	"fmt"
 	"net"
 	"os"
-	"strconv"
 	"time"
 )
 
 type User struct {
 	ip   string
-	date int64
+	date string
 	key  string
 }
 
 // Generates a key
 func generateKey() (string, error) {
-	bytes := make([]byte, 64)
+	bytes := make([]byte, 32)
 	if _, err := rand.Read(bytes); err != nil {
 		return "", err
 	}
@@ -31,22 +30,21 @@ func generateKey() (string, error) {
 
 func writeToFile(saveFile string, data User) {
 	ip := data.ip
-	date := strconv.Itoa(int(data.date)) // converting int64 to str
+	date := data.date
 	key := data.key
 
-	fmt.Println(date, ip, key) // log to stdout
+	f, err := os.OpenFile(saveFile, os.O_APPEND|os.O_WRONLY, 0600)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
-	f, err := os.OpenFile(saveFile, os.O_APPEND, 0600)
+	_, err = f.Write([]byte(date + " " + ip + " " + key + "\n"))
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	defer f.Close()
-	f.Write([]byte(date + " " + ip + " " + key + "\n"))
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+	f.Close()
 }
 
 func Readln(r *bufio.Reader) (string, error) {
@@ -64,7 +62,7 @@ func Readln(r *bufio.Reader) (string, error) {
 	return string(ln), err
 }
 
-func readFile(saveFile string, ip string) { //(bool, line int)
+func readFile(saveFile string, ip string) {
 	file, err := os.Open(saveFile) // Open file
 	if err != nil {
 		fmt.Printf("no such file: %s", file)
@@ -79,26 +77,17 @@ func readFile(saveFile string, ip string) { //(bool, line int)
 		fmt.Println(s)
 		s, e = Readln(r)
 	}
-
-	// scanner := bufio.NewScanner(file)
-	// print(scanner.Err())
-	// // Loop over all lines in the file and print them.
-	// for scanner.Scan() {
-	// 	line := scanner.Text()
-	// 	fmt.Println(line)
-	// }
-
-	// var line int = 0
-
-	// return true, line
-
 }
 
 func main() {
-	port := flag.String("p", "80", "port to run on")
-	saveFile := flag.String("f", "./data", "savefile")
-
+	port := flag.String("p", "443", "port to run on")
+	saveFile := flag.String("f", "data", "savefile")
 	flag.Parse()
+
+	_, chkFile := os.Open(*saveFile)
+	if chkFile != nil {
+		os.Create(*saveFile)
+	}
 
 	// Start tcp server
 	l, err := net.Listen("tcp", "127.0.0.1:"+*port)
@@ -120,16 +109,18 @@ func main() {
 			fmt.Printf("error generating key: %s", err)
 		}
 
-		readFile(*saveFile, strRemoteAddr) // find if ip exists
-		date := time.Now().Unix()
-		// _ = date
+		// readFile(*saveFile, strRemoteAddr) // find if ip exists
+		date := time.Now().String()
+		// date to readable format
 		fmt.Println(date, strRemoteAddr, key)
 
 		// Write key
 		go func(c net.Conn) {
 			conn.Write([]byte(string(key)))
+			writeToFile(*saveFile, User{strRemoteAddr, date, key})
 			// Shut down the connection.
 			c.Close()
 		}(conn)
 	}
+
 }

