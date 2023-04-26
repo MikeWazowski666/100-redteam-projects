@@ -44,7 +44,7 @@ func decrypt(fn string) {
 
 func main() {
 	fn := flag.String("f", "temp.txt", "file to en/decrypt")
-	decrypt_FLAG := flag.Bool("de", false, "decrypt flag")
+	decrypt_FLAG := flag.Bool("d", false, "decrypt flag")
 	flag.Parse()
 	if !*decrypt_FLAG {
 		enc(*fn)
